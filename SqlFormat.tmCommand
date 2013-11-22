@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+require 'uri'
+require 'net/http'
+require 'json'
+
+uri = URI("http://sqlformat.org/api/v1/format")
+https = Net::HTTP.new(uri.host, uri.port)
+https.use_ssl = false
+
+body = URI.encode_www_form({:sql =&gt; "#{ENV['TM_SELECTED_TEXT']}", :reindent =&gt; 1, :identifier_case =&gt; "upper"})
+
+response = https.post(uri.path, body) 
+puts JSON.parse(response.body)["result"]</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>@F</string>
+	<key>name</key>
+	<string>SQL Format</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>snippet</string>
+	<key>outputLocation</key>
+	<string>replaceInput</string>
+	<key>uuid</key>
+	<string>764F3419-AAE2-4AC4-8E5B-517776DC9052</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>
